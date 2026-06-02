@@ -291,32 +291,30 @@ body {
 .check-text { font-size: 15px; color: var(--text); line-height: 1.4; transition: color .2s; }
 .check-label input:checked ~ .check-text { color: var(--text-3); text-decoration: line-through; text-decoration-color: var(--text-3); }
 
-/* ── CTA ── */
-.cta-box {
-  position: relative;
-  background: var(--amber-bg);
-  border: 1px solid var(--amber-border);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-}
-.cta-text { font-size: 14px; color: var(--amber); font-style: italic; line-height: 1.5; padding-right: 70px; }
-.btn-copy {
+/* ── CTA dual boxes ── */
+.cta-pair { display: flex; flex-direction: column; gap: 8px; }
+.cta-item { position: relative; border-radius: 8px; padding: 10px 14px; }
+.cta-item-social { background: #eef3ff; border: 1px solid #c7d9ff; }
+.cta-item-website { background: #ecfdf5; border: 1px solid #a7f3d0; }
+.cta-item-label { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
+.cta-item-social .cta-item-label { color: #1a56db; }
+.cta-item-website .cta-item-label { color: #0e7a4e; }
+.cta-item-text { font-size: 13px; font-style: italic; line-height: 1.45; padding-right: 60px; color: #2a2a2a; }
+.btn-copy-sm {
   position: absolute;
   top: 10px; right: 10px;
-  background: none;
-  border: 1px solid var(--amber-border);
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: none;
   cursor: pointer;
-  color: var(--amber);
   font-family: inherit;
-  transition: background .15s;
   touch-action: manipulation;
 }
-.btn-copy:active { background: var(--amber-border); }
-.btn-copy.copied { color: var(--green); border-color: var(--green-border); }
+.cta-item-social .btn-copy-sm { background: #c7d9ff; color: #1a56db; }
+.cta-item-website .btn-copy-sm { background: #a7f3d0; color: #0e7a4e; }
+.btn-copy-sm.copied { opacity: .7; }
 
 /* ── TIP ── */
 .tip-box {
@@ -373,10 +371,9 @@ body {
 }
 .script-body.open { display: block; }
 
-.script-steps { list-style: none; counter-reset: sn; }
+.script-steps { list-style: none; }
 
 .script-step {
-  counter-increment: sn;
   display: flex;
   gap: 12px;
   padding: 11px 0;
@@ -384,27 +381,80 @@ body {
 }
 .script-step:last-child { border-bottom: none; }
 
-.script-step::before {
-  content: counter(sn);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  min-width: 22px;
-  background: var(--accent);
-  color: #fff;
-  border-radius: 50%;
-  font-size: 11px;
-  font-weight: 800;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
 .script-step-inner { flex: 1; }
 .script-step-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
 .script-step-line  { font-size: 14px; font-style: italic; color: #1e3a8a; margin-top: 5px; line-height: 1.5; }
 .script-step-note  { font-size: 13px; color: var(--text-2); margin-top: 5px; line-height: 1.4; }
+
+/* Script deel header */
+.script-deel {
+  background: #f0f0ee;
+  padding: 7px 10px;
+  margin: 8px 0 4px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #5a5a5a;
+}
+
+/* Knipmoment banner */
+.script-knip {
+  margin: 10px 0;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-align: center;
+}
+.script-knip-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c2410c;
+}
+.script-knip-sub {
+  font-size: 11px;
+  color: #9a3412;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* Role labels */
+.script-role {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+.role-mikki { background: #eef3ff; color: #1a56db; }
+.role-broll { background: #f4f4f2; color: #6b6b6b; }
+
+/* Opt A/B sub-items */
+.script-opt {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.opt-label {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+.opt-a { background: #eef3ff; color: #1a56db; }
+.opt-b { background: #ecfdf5; color: #0e7a4e; }
+.opt-text { color: #2a2a2a; font-style: italic; }
 
 /* ── FOOTER ── */
 #footer {
@@ -441,9 +491,9 @@ body {
     <div id="progress-track"><div id="progress-fill"></div></div>
   </div>
   <div id="day-tabs">
-    <button class="day-tab active" data-day="0"><span class="tab-label">Dag 1</span><span class="tab-date">Di 2 jun</span></button>
-    <button class="day-tab"        data-day="1"><span class="tab-label">Dag 2</span><span class="tab-date">Wo 3 jun</span></button>
-    <button class="day-tab"        data-day="2"><span class="tab-label">Dag 3</span><span class="tab-date">Di 9 jun</span></button>
+    <button class="day-tab active" data-day="0"><span class="tab-label">Dag 1</span><span class="tab-date">Wo 3 jun</span></button>
+    <button class="day-tab"        data-day="1"><span class="tab-label">Dag 2</span><span class="tab-date">Di 10 jun</span></button>
+    <button class="day-tab"        data-day="2"><span class="tab-label">Dag 3</span><span class="tab-date">Wo 11 jun</span></button>
   </div>
 </div>
 
@@ -455,18 +505,20 @@ body {
     <button id="std-toggle" onclick="toggleStd()">
       <span>Standaard checklist — alle locaties</span>
       <span id="std-toggle-right">
-        <span id="std-done-count">0/7</span>
+        <span id="std-done-count">0/9</span>
         <span id="std-chevron">▸</span>
       </span>
     </button>
     <div id="std-body">
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="0"><span class="std-num">1</span><span class="std-text">B-roll van de stad en de highlights</span></label></div>
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="1"><span class="std-num">2</span><span class="std-text">Looproute in beeld (presentator voorop / POV)</span></label></div>
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="2"><span class="std-num">3</span><span class="std-text">Praktische info buiten: voordeur & naambordje duidelijk in beeld</span></label></div>
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="3"><span class="std-num">4</span><span class="std-text">Praktische info buiten: op welke bel drukken? (close-up)</span></label></div>
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="4"><span class="std-num">5</span><span class="std-text">Praktische info binnen: welke verdieping / lift of trap?</span></label></div>
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="5"><span class="std-num">6</span><span class="std-text">Binnenkomst lokaal & sfeer laten zien</span></label></div>
-      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="6"><span class="std-num">7</span><span class="std-text">CTA duidelijk inspreken met de juiste stadsnaam</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="0"><span class="std-num">1</span><span class="std-text">B-roll van de stad en de highlights (sfeer en route)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="1"><span class="std-num">2</span><span class="std-text">Looproute in beeld (presentator die voorop loopt / POV)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="2"><span class="std-num">3</span><span class="std-text">HET KNIPMOMENT: laat de presentator een duidelijke pauze vallen tussen het social media-deel en het praktische website-deel</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="3"><span class="std-num">4</span><span class="std-text">Twee intro-versies opnemen: "Welkom bij..." (website) en "Hier is het!" (social backup)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="4"><span class="std-num">5</span><span class="std-text">Praktische info buiten: de voordeur & naambordje duidelijk in beeld</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="5"><span class="std-num">6</span><span class="std-text">Praktische info buiten: op welke bel moet je drukken? (close-up)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="6"><span class="std-num">7</span><span class="std-text">Praktische info binnen: naar welke verdieping / lift of trap?</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="7"><span class="std-num">8</span><span class="std-text">Binnenkomst lokaal: sfeer laten zien</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="8"><span class="std-num">9</span><span class="std-text">Twee CTA's inspreken: DM-reactie (Social) en aanmeld-oproep (Website)</span></label></div>
     </div>
   </div>
 
@@ -488,9 +540,9 @@ body {
 ═══════════════════════════════════════════ */
 const DAYS = [
 
-/* ── DAG 1: Noord-Holland (Di 2 jun) ── */
+/* ── DAG 1: Noord-Holland (Wo 3 jun) ── */
 {
-  id: 'dag1', label: 'Dag 1 — Dinsdag 2 juni', subtitle: 'Noord-Holland',
+  id: 'dag1', label: 'Dag 1 — Woensdag 3 juni', subtitle: 'Noord-Holland',
   note: 'Later vertrekken om de ochtendspits te vermijden. Dag rondt mooi af rond 17:00.',
   blocks: [
     { id:'r-hl-hilv', type:'travel', start:'09:15', end:'10:15', name:'Reistijd Haarlem → Hilversum' },
@@ -498,12 +550,21 @@ const DAYS = [
       id:'loc-hilversum', type:'location', start:'10:15', end:'11:45',
       name:'Hilversum', address:'Oude Torenstraat 41',
       parking:'Parkeergarage Gooische Brink — Brinkweg 1', parkingNote:null,
-      shots:['Centrum / voor de deur staan (B-roll)','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Verdieping / trap of lift','Binnenkomst lokaal & sfeer','CTA Hilversum'],
-      cta:'Wil jij Nederlands leren in Hilversum, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      tip:'Productievolgorde: begin op de locatie (Deel 2 eerst filmen), daarna naar het station voor het sociale Deel 1. Zo bespaar je looptijd op de dag.',
+      shots:['Station Hilversum (opening social)','Mediastad architectuur / Beeld en Geluid (B-roll)','Kerkbrink & Fotomuseum (B-roll)','Hillywings mural (B-roll)','Voordeur & naambordje in beeld','Bel close-up','Binnenkant lokaal'],
+      ctaSocial:'Wil jij Nederlands leren in Hilversum? Reageer dan met HILVERSUM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Hilversum? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Bij de locatie', line:'We staan voor de Taalthuis locatie in Hilversum! Zoals je ziet, ligt het centraal gelegen in het centrum. Ongeveer tien minuutjes lopen van het station, en je bent er al! Loop je mee naar binnen?' },
-        { title:'Locatie van binnen', note:'Praktisch: voordeur, naambordje, bel, welke verdieping — alles duidelijk in beeld.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Hilversum, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij station Hilversum', line:'We zijn net aangekomen in Hilversum! De Taalthuis locatie ligt op ongeveer tien minuutjes lopen van het station. Ga je mee?'},
+        {type:'step', role:'B-roll/V.O.', title:'Wandelroute highlights', note:'Hilversum is echt een mediastad. Rondom het station zie je gelijk veel moderne architectuur en street art! [B-roll: Instituut Beeld en Geluid, street art]. We lopen via de Kerkbrink, één van de mooiste pleinen van Hilversum vol oude bomen, terrassen en het Fotomuseum. En check deze bekende kleurrijke Hillywings mural waar we langs komen, perfect voor een foto!'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Hilversum aan de Oude Torenstraat 41!', optB:'We staan voor de Taalthuis locatie in Hilversum! Zoals je ziet, ligt het super centraal in het centrum.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Loop je mee naar binnen? Je gaat hier door de voordeur, drukt op deze bel [aanwijzen/klikken] en we gaan naar de [juiste verdieping invullen].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Focus op de voordeur, close-up van de specifieke deurbel, de trap of lift omhoog, en sfeerbeelden van het ingerichte klaslokaal.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Hilversum? Reageer dan met HILVERSUM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Hilversum? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-hilv-amst', type:'travel', start:'11:45', end:'12:15', name:'Reistijd → Amstelveen', note:'Tip: haal onderweg een snelle lunch!' },
@@ -511,14 +572,22 @@ const DAYS = [
       id:'loc-amstelveen', type:'location', start:'12:15', end:'13:45',
       name:'Amstelveen', address:'Maalderij 21D',
       parking:'Start: Q-Park Stadsplein (centrum) voor busshots', parkingNote:'Rijd daarna door naar Maalderij 21D — parkeren op het industrieterrein.',
-      shots:['Stadshart Amstelveen (B-roll)','(Fake) instappen bus','Aankomst boven de sportschool','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Verdieping / trap of lift','Binnenkomst lokaal & sfeer','CTA Amstelveen'],
-      cta:'Wil jij Nederlands leren in Amstelveen, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      shots:['Stadshart Amstelveen (B-roll)','(Fake) instappen bus','Route / uitzicht vanuit bus','Aankomst boven sportschool','Praktische info locatie (voordeur, bel, verdieping)','Sfeerbeelden wandelroute bij De Poel'],
+      ctaSocial:'Wil jij Nederlands leren in Amstelveen? Reageer dan met AMSTELVEEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Amstelveen? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'In stadshart Amstelveen', line:'We zijn in Amstelveen! Hier opent Taalthuis per september een gloednieuwe leslocatie. Ga je mee?' },
-        { title:'Onderweg naar locatie', note:'Shot instappen bus, route richting locatie. (We rijden met de auto maar het lijkt alsof we de bus pakken.)' },
-        { title:'Op de locatie', line:'Hier is het, boven de sportschool!', note:'Praktisch: voordeur, naambordje, bel, welke verdieping.' },
-        { title:'Shots locatie binnen', note:'Sfeer van het lokaal.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Amstelveen, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening in Stadshart', line:'We zijn in Amstelveen! Hier opent Taalthuis per september een gloednieuwe leslocatie. Ga je mee?'},
+        {type:'step', role:'B-roll', title:'Busroute (fake)', note:'(Fake) instappen in de bus, route, uitzicht vanuit de bus richting locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Amstelveen aan de Maalderij 21D!', optB:'Hier is het! Aan de Maalderij 21D.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Het ligt op een bedrijventerrein, dus je kunt hier super makkelijk parkeren. Onze locatie zit precies boven de sportschool. Je gaat door deze voordeur [aanwijzen/klikken op specifieke bel] en dan naar de [juiste verdieping].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Huisnummer, deur, bordje sportschool, trap of lift, leslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Omgeving: De Poel'},
+        {type:'step', role:'Mikki', title:'Sfeer bij De Poel', line:'En als je na de lessen toe bent aan een wandeling, dan is dit een prachtige route langs De Poel om even uit te waaien!'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Amstelveen? Reageer dan met AMSTELVEEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Amstelveen? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-amst-adam', type:'travel', start:'13:45', end:'14:15', name:'Reistijd → Amsterdam' },
@@ -526,24 +595,34 @@ const DAYS = [
       id:'loc-amsterdam', type:'location', start:'14:15', end:'16:15',
       name:'Amsterdam', address:'IJsselstraat 24',
       parking:'Rooseveltlaan — Rivierenbuurt (straatparkeren)', parkingNote:null,
-      tip:'Montage-tip: pak vanaf De Pijp de Noord-Zuidlijn richting Centraal. Stap er kort uit bij Ferdinand Bol / Albert Cuyp, Rokin, etc. voor B-roll shots — zo editeer je soepel. Sluit af bij Centraal Station. Disclaimer in de video: dit is niet de snelste route.',
-      shots:['Aan de Amstel (B-roll)','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Locatie binnen & leslokaal','B-roll metroroute: Ferdinand Bol / Albert Cuyp','B-roll metroroute: Rokin → Centraal Station','CTA Amsterdam'],
-      cta:'Wil jij Nederlands leren in Amsterdam, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      tip:'Montage-tip: pak vanaf De Pijp de Noord-Zuidlijn richting Centraal. Stap er kort uit bij Ferdinand Bol / Albert Cuyp, Rokin, etc. Sluit af bij Centraal Station. Disclaimer in de video: dit is niet de snelste route, maar wel de leukste.',
+      shots:['Aan de Amstel (oever shot)','Sfeer Rivierenbuurt richting IJsselstraat','Voordeur & naambordje','Deurbel close-up','Binnenkomst & leslokaal','B-roll route: Ferdinand Bolstraat → Albert Cuypmarkt','B-roll route: Museumplein → Vondelpark → Leidseplein → Rokin → Centraal','Aankomst Amsterdam Centraal'],
+      ctaSocial:'Wil jij Nederlands leren in Amsterdam? Reageer dan met AMSTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Amsterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening aan de Amstel', line:'We zijn in Amsterdam! In de hoofdstad hebben wij uiteraard ook een leslocatie. Loop je met ons mee?' },
-        { title:'Op de locatie', line:'Hier is het!' },
-        { title:'Shots van de locatie', note:'Binnen, leslokaal, bel & voordeur — alles praktisch in beeld.' },
-        { title:'Wandeling naar Centraal Station', line:'Hmm, hoe kom ik dan nu weer op Amsterdam Centraal? Ik laat het je zien!', note:'Route: Ferdinand Bolstraat → Albert Cuyp markt → Museumplein → Vondelpark → Leidseplein → Rokin → Amsterdam Centraal. Afsluiting: "Zo, we zijn er!" + disclaimer dat dit niet de snelste route is.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Amsterdam, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening aan de Amstel', line:'We zijn in Amsterdam! In de hoofdstad hebben wij uiteraard ook een leslocatie. Loop je met ons mee?'},
+        {type:'step', role:'B-roll', title:'Sfeer Rivierenbuurt', note:'Sfeerbeelden van de Amstel en de karakteristieke straten van de Rivierenbuurt richting de IJsselstraat.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Amsterdam aan de IJsselstraat 24! Het gebouw ligt dichtbij het stadscentrum en is goed bereikbaar met het openbaar vervoer.', optB:'Hier is het! Aan de IJsselstraat 24.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Je gaat hier door de voordeur, belt aan bij deze knop met het logo [aanwijzen/klikken] en loopt door naar de [juiste verdieping invullen]. Dit is waar onze lessen plaatsvinden!'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Voordeur, naambordje, deurbel close-up, binnenkomst, sfeervolle shots van het klaslokaal.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Route naar Centraal (Social Media)'},
+        {type:'step', role:'Mikki', title:'Route naar Amsterdam Centraal', line:'Hmm, hoe kom ik dan nu weer op Amsterdam Centraal? Ik laat het je zien!'},
+        {type:'step', role:'B-roll', title:'Snelle ritmische montage', note:'Ferdinand Bolstraat → Albert Cuypmarkt → Museumplein → Vondelpark → Leidseplein → Rokin → Amsterdam Centraal.'},
+        {type:'step', role:'Mikki', title:'Aankomst Centraal', line:'Zo, we zijn er! [Tekst in beeld: Disclaimer] Dit is natuurlijk niet de allersnelste route naar het station... maar wel veruit de leukste!'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Amsterdam? Reageer dan met AMSTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Amsterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-adam-hl', type:'travel', start:'16:15', end:'17:00', name:'Reistijd Amsterdam → Haarlem', note:'Wrap Dag 1' },
   ]
 },
 
-/* ── DAG 2: Zuid-Holland (Wo 3 jun) ── */
+/* ── DAG 2: Zuid-Holland (Di 10 jun) ── */
 {
-  id: 'dag2', label: 'Dag 2 — Woensdag 3 juni', subtitle: 'Zuid-Holland',
+  id: 'dag2', label: 'Dag 2 — Dinsdag 10 juni', subtitle: 'Zuid-Holland',
   note: 'Ruime planning om de verkeersdrukte rondom Rotterdam en Den Haag op te vangen.',
   blocks: [
     { id:'r-hl-rot', type:'travel', start:'08:15', end:'09:30', name:'Reistijd Haarlem → Rotterdam' },
@@ -551,13 +630,20 @@ const DAYS = [
       id:'loc-rotterdam', type:'location', start:'09:30', end:'11:30',
       name:'Rotterdam', address:'Oostzeedijk Beneden 107',
       parking:'Eerst: Boompjes of Willemsplein (Erasmusbrug shots)', parkingNote:'Rijd daarna door en parkeer op de Oostzeedijk zelf.',
-      shots:['Erasmusbrug langs het water (B-roll)','Looproute Oostzeedijk','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Verdieping / trap of lift','Binnenkomst lokaal & sfeer','CTA Rotterdam'],
-      cta:'Wil jij Nederlands leren in Rotterdam, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      shots:['Erasmusbrug langs het water (B-roll)','Looproute Oostzeedijk','Voordeur & naambordje','Deurbel close-up (Taalthuis-logo)','Verdieping / trap of lift','Leslokaal sfeer'],
+      ctaSocial:'Wil jij Nederlands leren in Rotterdam? Reageer dan met ROTTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Rotterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening langs het water (Erasmusbrug)', line:'We zijn in Rotterdam! Vanaf september kan je ook op deze prachtige locatie Nederlandse cursussen volgen bij Taalthuis! Loop je mee naar de leslocatie?' },
-        { title:'Bij de locatie (Oostzeedijk)', line:'De locatie is gelegen op de gezellige Oostzeedijk. Ga je mee naar binnen?', note:'Praktisch: voordeur, naambordje, bel, welke verdieping.' },
-        { title:'Shots locatie binnen', note:'Sfeer van het lokaal.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Rotterdam, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening langs de Erasmusbrug', line:'We zijn in Rotterdam! Vanaf september kan je ook op deze prachtige locatie Nederlandse cursussen volgen bij Taalthuis! Loop je mee naar de leslocatie?'},
+        {type:'step', role:'B-roll', title:'Erasmusbrug shots', note:'Dynamische shots van de Erasmusbrug, het water en de wandeling richting de locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Rotterdam aan de Oostzeedijk Beneden 107! Het gebouw is goed bereikbaar met het openbaar vervoer.', optB:'De locatie is gelegen op de gezellige Oostzeedijk op nummer 107!'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Ga je mee naar binnen? Je gaat hier door de voordeur, drukt op deze bel [aanwijzen/klikken] en dan lopen we door naar de [juiste verdieping invullen].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Voordeur aan de Oostzeedijk, deurbel close-up met Taalthuis-logo, route in het pand, sfeerbeelden nieuw klaslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Rotterdam? Reageer dan met ROTTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Rotterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-rot-dh', type:'travel', start:'11:30', end:'12:15', name:'Reistijd → Den Haag' },
@@ -567,15 +653,23 @@ const DAYS = [
       badge:'LUNCH',
       parking:'Statenkwartier (straatparkeren) voor locatieshots', parkingNote:'Rijd daarna door naar Parkeergarage Scheveningen Bad (Zwolsestraat) voor strandshots.',
       tip:'Neem direct de tijd voor lunch op het terrasje in Scheveningen!',
-      shots:['Frederik Hendriklaan (B-roll)','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Binnenkomst locatie — deur, 1e verdieping','Scheveningen strand: terrasje','Spa Rood bestellen (signature shot)','CTA Den Haag (op de locatie)'],
-      cta:'Wil jij Nederlands leren in Den Haag, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      shots:['Sfeerbeelden Frederik Hendriklaan (\'De Fred\')','Voordeur & naambordje','Deurbel close-up (Taalthuis-logo)','Binnenkomst locatie (1e verdieping)','Leslokaal sfeer','Scheveningen strand: terrasje','Spa Rood bestellen'],
+      ctaSocial:'Wil jij Nederlands leren in Den Haag? Reageer dan met DEN HAAG en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Den Haag? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening in Frederik Hendriklaan', line:'We zijn in Den Haag! In het gezellige Statenkwartier zit de Taalthuis locatie. Loop je met ons mee?' },
-        { title:'Bij de locatie', line:'We gaan door deze deur, en dan naar de eerste verdieping.', note:'Praktisch: voordeur, naambordje, bel, 1e verdieping.' },
-        { title:'Shots leslokaal', note:'Sfeer van het lokaal en de ruimte.' },
-        { title:'CTA (op de locatie)', line:'Wil jij Nederlands leren in Den Haag, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
-        { title:'Scheveningen strand', line:'De Taalthuis locatie zit vlakbij Scheveningen! Heerlijk om in dit zomerse weer even af te koelen. Én een goede plek om je Nederlands te leren!' },
-        { title:'Drankje op het terras', line:'Mag ik een spa rood, alsjeblieft?', note:'Demonstratie Nederlands in de praktijk. Hier ook direct lunchen!' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening in de Frederik Hendriklaan ("De Fred")', line:'We zijn in Den Haag! In het gezellige Statenkwartier zit de Taalthuis locatie. Loop je met ons mee?'},
+        {type:'step', role:'B-roll', title:'Sfeer De Fred', note:'Levendige sfeerbeelden van de Frederik Hendriklaan en de wandeling richting de locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Den Haag aan de Frederik Hendriklaan 85A! Het gebouw ligt dichtbij het stadscentrum en is goed bereikbaar met het openbaar vervoer.', optB:'Hier moeten we zijn! Aan de Frederik Hendriklaan.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'We gaan hier door de voordeur, we drukken op deze bel met het Taalthuis-logo [aanwijzen/klikken], en dan lopen we direct door naar de eerste verdieping.'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Close-up voordeur, bellenpaneel, route (trap/lift) naar 1e verdieping, sfeerbeelden leslokaal.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Scheveningen (alleen Social Media)'},
+        {type:'step', role:'Mikki', title:'Scheveningen strand', line:'De Taalthuis locatie zit trouwens vlakbij Scheveningen! Heerlijk om in dit zomerse weer even af te koelen. Én een goede plek om je Nederlands te leren!'},
+        {type:'step', role:'Mikki', title:'Drankje bestellen (ook lunch!)', line:'Mag ik een spa rood, alsjeblieft?'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Den Haag? Reageer dan met DEN HAAG en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Den Haag? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-dh-lei', type:'travel', start:'14:30', end:'15:15', name:'Reistijd → Leiden' },
@@ -583,23 +677,32 @@ const DAYS = [
       id:'loc-leiden', type:'location', start:'15:15', end:'17:00',
       name:'Leiden', address:'Schipholweg 66',
       parking:'Parkeergarage Morspoort — Bloemwijkstraat 2', parkingNote:null,
-      shots:['Leiden Centraal (B-roll)','Molenmuseum de Valk (B-roll)','Burcht (B-roll)','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','De tocht helemaal naar de 3e verdieping','Binnenkomst lokaal & sfeer','CTA Leiden'],
-      cta:'Wil jij Nederlands leren in Leiden, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      shots:['Leiden Centraal (B-roll)','Wandelroute naar locatie','Tocht helemaal naar de 3e verdieping','Voordeur & naambordje','Deurbel close-up','Leslokaal sfeer','B-roll stad: Molenmuseum de Valk','B-roll stad: Wereldmuseum, Morspoort, Hortus Botanicus, Burcht'],
+      ctaSocial:'Wil jij Nederlands leren in Leiden? Reageer dan met LEIDEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Leiden? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening op Leiden Centraal', line:'We zijn in Leiden! De leslocatie van Taalthuis zit op maar 5 minuutjes lopen. Loop je met ons mee?' },
-        { title:'Op de locatie', line:'We zijn er! We gaan helemaal naar boven, naar de derde verdieping.', note:'Praktisch: voordeur, naambordje, bel, 3e verdieping.' },
-        { title:'Shots locatie binnen', note:'Sfeer van het lokaal.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Leiden, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
-        { title:'Buiten in de stad', line:'Leiden is verder een hele gezellige stad! Zo heb je het Molenmuseum de Valk, Wereldmuseum, de Morspoort, de Hortus Botanicus en de Burcht! Allemaal plekken om te bezoeken na je cursus Nederlands.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij Leiden Centraal', line:'We zijn in Leiden! De leslocatie van Taalthuis zit op maar 5 minuutjes lopen. Loop je met ons mee?'},
+        {type:'step', role:'B-roll', title:'Station en wandelroute', note:'Sfeerbeelden van het station en de wandelroute richting de locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Leiden aan de Schipholweg 66! Het gebouw ligt dichtbij het stadscentrum en het centraal station van Leiden.', optB:'We zijn er! Aan de Schipholweg 66.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'We gaan hier door de voordeur, drukken op deze bel [aanwijzen/klikken], en we gaan helemaal naar boven, naar de derde verdieping. Hier vind je onze leslokalen!'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Duidelijke focus op de entree, deurbel, lift of trap naar 3e verdieping, klaslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Centrum Leiden (alleen Social Media)'},
+        {type:'step', role:'Mikki', title:'Highlights van Leiden', line:'Leiden is verder een hele gezellige stad! Zo heb je het Molenmuseum de Valk, Wereldmuseum, de Morspoort, de Hortus Botanicus en de Burcht! Allemaal plekken om te bezoeken na je cursus Nederlands.'},
+        {type:'step', role:'B-roll', title:'Sfeerbeelden stad', note:'Flitsen of sfeerbeelden van bezienswaardigheden en het historische centrum.'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Leiden? Reageer dan met LEIDEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Leiden? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-lei-hl', type:'travel', start:'17:00', end:'17:45', name:'Reistijd Leiden → Haarlem', note:'Wrap Dag 2' },
   ]
 },
 
-/* ── DAG 3: Zuid/Midden (Di 9 jun) ── */
+/* ── DAG 3: Zuid/Midden (Wo 11 jun) ── */
 {
-  id: 'dag3', label: 'Dag 3 — Dinsdag 9 juni', subtitle: 'Zuid / Midden',
+  id: 'dag3', label: 'Dag 3 — Woensdag 11 juni', subtitle: 'Zuid / Midden',
   note: 'Vroeg vertrekken om de files richting het zuiden voor te zijn.',
   blocks: [
     { id:'r-hl-eindhoven', type:'travel', start:'07:30', end:'09:30', name:'Reistijd Haarlem → Eindhoven' },
@@ -607,14 +710,21 @@ const DAYS = [
       id:'loc-eindhoven', type:'location', start:'09:30', end:'11:30',
       name:'Eindhoven', address:'Jan van Hooffstraat 8F',
       parking:'Q-Park de Bijenkorf — Schimmelt 50', parkingNote:'Ligt direct naast je eerste filmlocaties.',
-      shots:['Station Eindhoven','Blob & Lichttoren','De Markt','Wandelroute naar locatie','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Verdieping / trap of lift','Binnenkomst lokaal & sfeer','CTA Eindhoven'],
-      cta:'Wil jij Nederlands leren in Eindhoven, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      shots:['Station Eindhoven','Blob & Lichttoren (B-roll)','De Markt','Wandelroute naar locatie','Voordeur & naambordje Jan van Hooffstraat 8F','Deurbel close-up','Verdieping / trap of lift','Leslokaal van binnen'],
+      ctaSocial:'Wil jij Nederlands leren in Eindhoven? Reageer dan met EINDHOVEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Eindhoven? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening op station Eindhoven', line:'We zijn in Eindhoven! Onze Taalthuis locatie ligt maar op tien minuutjes lopen van het station. Loop je mee?' },
-        { title:'Onderweg', note:'Blob (gebouw naast de Bijenkorf — Eindhoven als design- & technologiestad). Lichttoren (oud Philips fabriekspand): "Wist je dat Eindhoven daarom ook wel de lichtstad wordt genoemd?" — ook langs Philips/Van Abbe museum.' },
-        { title:'Op de Markt', line:'En zo zijn we alweer op het gezelligste plein van Eindhoven! Taalthuis zit hier om de hoek.' },
-        { title:'Locatie van binnen', note:'Praktisch: voordeur, naambordje, bel, welke verdieping — alles duidelijk in beeld.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Eindhoven, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij station Eindhoven', line:'We zijn in Eindhoven! Onze Taalthuis locatie ligt maar op tien minuutjes lopen van het station. Loop je mee?'},
+        {type:'step', role:'B-roll/V.O.', title:'Wandelroute langs highlights', note:'Lopen langs de Blob en de Lichttoren. V.O.: "Wist je dat Eindhoven door deze oude Philips-fabriek ook wel de lichtstad wordt genoemd?" Shots van het Philips/Van Abbe museum.'},
+        {type:'step', role:'Mikki', title:'Op de Markt', line:'En zo zijn we alweer op het gezelligste plein van Eindhoven! Taalthuis zit hier om de hoek.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Eindhoven aan de Jan van Hooffstraat 8F! De locatie ligt midden in het centrum en is maar tien minuutjes lopen vanaf het station.', optB:'Hier is het! Aan de Jan van Hooffstraat 8F.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'De locatie ligt midden in het centrum. Je gaat door deze voordeur, drukt hier op de bel [aanwijzen/klikken] en dan gaan we naar de [juiste verdieping invullen].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Looproute vanaf de Markt, voordeur, close-up juiste deurbel, trap of lift naar verdieping, shots leslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Eindhoven? Reageer dan met EINDHOVEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Eindhoven? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-eindhoven-db', type:'travel', start:'11:30', end:'12:15', name:'Reistijd → Den Bosch' },
@@ -623,15 +733,25 @@ const DAYS = [
       name:'Den Bosch', address:'Maaslandstraat 2A',
       badge:'LUNCH',
       parking:'Q-Park Station — Colvenierstraat 20', parkingNote:null,
-      tip:'Neem hier direct de tijd voor lunch!',
-      shots:['Uitzicht vanuit het lokaal op het station','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Verdieping / trap of lift','Binnenkomst lokaal & sfeer','Wandeling naar Jan de Groot','Bossche bol kopen en proeven','CTA Den Bosch'],
-      cta:'Wil jij Nederlands leren in Den Bosch, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      tip:'Neem hier direct de tijd voor lunch bij Jan de Groot!',
+      shots:['Opening in klaslokaal (uitzicht op station)','Praktische info: voordeur, bel met logo, lift/trap','Wandeling naar Jan de Groot','Bossche bol kopen en proeven (shots in de winkel)'],
+      ctaSocial:'Wil jij Nederlands leren in Den Bosch? Reageer dan met DEN BOSCH en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Den Bosch? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening in het klaslokaal', line:'Ik zit hier in het klaslokaal van de Taalthuis locatie in Den Bosch. Kijk nou, wat een mooi uitzicht op het station! Het is maar 5 minuutjes lopen.', note:'Praktisch: voordeur, naambordje, bel, welke verdieping.' },
-        { title:'Buiten richting Jan de Groot', line:'En mocht je nou na je Nederlandse les zin hebben gekregen in een Nederlandse snack, dan moet je naar Jan de Groot gaan. Loop je mee?' },
-        { title:'Bij Jan de Groot', line:'Hier verkopen ze de beste Bossche bollen van Nederland! Zullen we er eentje proeven?' },
-        { title:'Shots bij Jan de Groot', note:'Bol kopen, proeven, close-up. Lunch hier direct inplannen!' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Den Bosch, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening in het klaslokaal', line:'Ik zit hier in het klaslokaal van de Taalthuis locatie in Den Bosch. Kijk nou, wat een prachtig uitzicht we hier op het station hebben! Het is maar 5 minuutjes lopen.'},
+        {type:'step', role:'B-roll', title:'Sfeer lokaal', note:'Sfeerimpressie van het lokaal en het uitzicht naar buiten op het station.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Den Bosch aan de Maaslandstraat 2A! De lessen vinden plaats in het gebouw van het Studiecentrum. Het gebouw ligt direct tegenover het centraal station.', optB:'Maar hoe kom je hier nou precies binnen? Ik laat het je zien!'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Je gaat hier door de voordeur, drukt op deze bel met het logo [aanwijzen/klikken] en dan nemen we de trap of lift naar de [juiste verdieping].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Huisnummer, voordeur, close-up specifieke deurbel, route naar verdieping.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Bossche bollen bij Jan de Groot (+ lunch!)'},
+        {type:'step', role:'Mikki', title:'Onderweg naar Jan de Groot', line:'En mocht je nou na je Nederlandse les zin hebben gekregen in een Nederlandse snack, dan moet je naar Jan de Groot gaan. Loop je mee?'},
+        {type:'step', role:'Mikki', title:'Bij de bakker', line:'Hier verkopen ze de allerbeste Bossche bollen van Nederland! Zullen we er eentje proeven?'},
+        {type:'step', role:'B-roll', title:'Bossche bol shots', note:'Lekkere shots van de bollen in de winkel. Direct ook lunchen hier!'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Den Bosch? Reageer dan met DEN BOSCH en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Den Bosch? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-db-utrecht', type:'travel', start:'14:15', end:'15:00', name:'Reistijd → Utrecht' },
@@ -639,14 +759,20 @@ const DAYS = [
       id:'loc-utrecht', type:'location', start:'15:00', end:'17:00',
       name:'Utrecht', address:'Maliebaan 87',
       parking:'Maliebaan — betaald straatparkeren', parkingNote:'Parkeer dicht bij het Spoorwegmuseum.',
-      shots:['Station Maliebaan','Spoorwegmuseum (B-roll)','Looproute in de straat','Voordeur & naambordje in beeld','Bel close-up (op welke bel drukken?)','Locatie binnen — deuren en trap naar 2e verdieping','Binnenkomst lokaal & sfeer','CTA Utrecht'],
-      cta:'Wil jij Nederlands leren in Utrecht, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.',
+      shots:['Station Maliebaan','Spoorwegmuseum (B-roll)','Looproute in de straat','Grote deuren locatie','Trap naar 2e verdieping','Leslokaal van binnen'],
+      ctaSocial:'Wil jij Nederlands leren in Utrecht? Reageer dan met UTRECHT en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Utrecht? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
       script:[
-        { title:'Opening op station Maliebaan', line:'We zijn in Utrecht! Vanaf station Maliebaan is de Taalthuis locatie tien minuutjes lopen. Loop je mee? Als we het station uitlopen komen we langs het Spoorwegmuseum. En als je deze straat uit loopt, kom je vanzelf bij het centrum!' },
-        { title:'Lopen naar de locatie', line:'Hier is het!' },
-        { title:'Binnen laten zien', line:'Je gaat door deze deur heen, en dan naar de tweede verdieping. Hier vind je onze leslokalen!', note:'Praktisch: voordeur, naambordje, bel, 2e verdieping.' },
-        { title:'Shots locatie binnen', note:'Sfeer van het lokaal.' },
-        { title:'CTA', line:'Wil jij Nederlands leren in Utrecht, of op een van onze andere locaties? Klik op de link in onze bio en bekijk het actuele rooster en de startdatum.' },
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij station Maliebaan', line:'We zijn in Utrecht! Vanaf station Maliebaan is de Taalthuis locatie tien minuutjes lopen. Loop je mee? Als we het station uitlopen komen we langs het Spoorwegmuseum. En als je deze straat uitloopt, kom je vanzelf bij het centrum!'},
+        {type:'step', role:'B-roll', title:'Station en wandelroute', note:'Beelden van station Maliebaan, het Spoorwegmuseum en de wandelroute over de straat.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Utrecht aan de Maliebaan 87! Het gebouw ligt dichtbij het stadscentrum en is goed bereikbaar met het openbaar vervoer.', optB:'Hier is het! Aan de statige Maliebaan 87.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Omdat cursisten ons soms lastig kunnen vinden, laat ik je precies zien waar je moet zijn! Goed om te weten: vanaf Utrecht Centraal is het ongeveer 30 minuutjes lopen. Je gaat door deze grote deur heen [wijst voordeur aan], drukt op deze bel, en dan gaan we met de trap naar de tweede verdieping. Hier vind je onze leslokalen!'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Extra duidelijke shots van gevel/huisnummer, voordeur, bellenpaneel (wát precies indrukken?), trap naar 2e verdieping, leslokalen van binnen.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Utrecht? Reageer dan met UTRECHT en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Utrecht? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
       ]
     },
     { id:'r-utrecht-hl', type:'travel', start:'17:00', end:'18:00', name:'Reistijd Utrecht → Haarlem', note:'Wrap Dag 3' },
@@ -658,7 +784,7 @@ const DAYS = [
 /* ═══════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════ */
-const SK = 'taalthuis-v3';
+const SK = 'taalthuis-v4';
 let state = {};
 try { state = JSON.parse(localStorage.getItem(SK) || '{}'); } catch(e) {}
 function save() { try { localStorage.setItem(SK, JSON.stringify(state)); } catch(e) {} }
@@ -710,7 +836,7 @@ function initStdChecklist() {
 function updateStdCount() {
   const st = stdState();
   const done = Object.values(st).filter(Boolean).length;
-  document.getElementById('std-done-count').textContent = done + '/7';
+  document.getElementById('std-done-count').textContent = done + '/9';
 }
 
 /* ═══════════════════════════════════════════
@@ -732,6 +858,83 @@ function renderDay() {
 
   day.blocks.forEach(b => c.appendChild(buildBlock(b)));
   updateGlobal();
+}
+
+/* ═══════════════════════════════════════════
+   BUILD SCRIPT SECTION
+═══════════════════════════════════════════ */
+function buildScriptSection(b, wrap) {
+  if (!b.script || !b.script.length) return;
+
+  const sw = document.createElement('div');
+  sw.className = 'script-wrap';
+
+  const stepCount = b.script.filter(s => s.type === 'step').length;
+
+  const stoggle = document.createElement('button');
+  stoggle.className = 'script-toggle';
+  stoggle.setAttribute('aria-expanded', 'false');
+  stoggle.innerHTML = `
+    <span class="script-toggle-lbl">Script</span>
+    <span class="script-toggle-right">
+      <span class="script-step-count">${stepCount} stappen</span>
+      <span class="s-chevron">▸</span>
+    </span>
+  `;
+
+  const sbody = document.createElement('div');
+  sbody.className = 'script-body';
+  sbody.id = 'script-' + b.id;
+
+  const ol = document.createElement('ol');
+  ol.className = 'script-steps';
+
+  let stepNum = 0;
+  b.script.forEach(item => {
+    if (item.type === 'deel') {
+      const d = document.createElement('div');
+      d.className = 'script-deel';
+      d.textContent = item.title;
+      ol.appendChild(d);
+    } else if (item.type === 'knip') {
+      const k = document.createElement('div');
+      k.className = 'script-knip';
+      k.innerHTML = '<div class="script-knip-title">✂ KNIPMOMENT VOOR DE EDIT ✂</div><div class="script-knip-sub">Vanaf hier is de video los te knippen voor de website</div>';
+      ol.appendChild(k);
+    } else if (item.type === 'step') {
+      stepNum++;
+      const li = document.createElement('li');
+      li.className = 'script-step';
+      const roleClass = item.role && item.role.startsWith('Mikki') ? 'role-mikki' : 'role-broll';
+      let html = `<div class="script-step-inner">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-size:12px;font-weight:700;color:#9a9a9a;min-width:18px;">${stepNum}</span>
+          <span class="script-role ${roleClass}">${item.role || 'Mikki'}</span>
+          <span class="script-step-title">${item.title}</span>
+        </div>`;
+      if (item.line) html += `<div class="script-step-line">"${item.line}"</div>`;
+      if (item.note) html += `<div class="script-step-note">${item.note}</div>`;
+      if (item.optA || item.optB) {
+        if (item.optA) html += `<div class="script-opt"><span class="opt-label opt-a">A</span><span class="opt-text">"${item.optA}"</span></div>`;
+        if (item.optB) html += `<div class="script-opt"><span class="opt-label opt-b">B</span><span class="opt-text">"${item.optB}"</span></div>`;
+      }
+      html += '</div>';
+      li.innerHTML = html;
+      ol.appendChild(li);
+    }
+  });
+
+  sbody.appendChild(ol);
+
+  stoggle.addEventListener('click', () => {
+    const open = stoggle.getAttribute('aria-expanded') === 'true';
+    stoggle.setAttribute('aria-expanded', String(!open));
+    sbody.classList.toggle('open', !open);
+  });
+
+  sw.appendChild(stoggle);
+  sw.appendChild(sbody);
+  wrap.appendChild(sw);
 }
 
 /* ═══════════════════════════════════════════
@@ -823,85 +1026,8 @@ function buildBlock(b) {
     cs.appendChild(ul);
     wrap.appendChild(cs);
 
-    // CTA
-    if (b.cta) {
-      const ctaS = document.createElement('div');
-      ctaS.className = 'section';
-      ctaS.innerHTML = '<div class="sec-label">CTA Tekst</div>';
-      const box = document.createElement('div');
-      box.className = 'cta-box';
-      const txt = document.createElement('div');
-      txt.className = 'cta-text';
-      txt.textContent = '"' + b.cta + '"';
-      const btn = document.createElement('button');
-      btn.className = 'btn-copy';
-      btn.textContent = 'Kopieer';
-      btn.addEventListener('click', () => {
-        navigator.clipboard.writeText(b.cta).then(() => {
-          btn.textContent = 'Gekopieerd!';
-          btn.classList.add('copied');
-          setTimeout(() => { btn.textContent = 'Kopieer'; btn.classList.remove('copied'); }, 2000);
-        }).catch(() => {
-          const r = document.createRange();
-          r.selectNode(txt);
-          window.getSelection().removeAllRanges();
-          window.getSelection().addRange(r);
-        });
-      });
-      box.appendChild(txt);
-      box.appendChild(btn);
-      ctaS.appendChild(box);
-      wrap.appendChild(ctaS);
-    }
-
     // Script
-    if (b.script && b.script.length) {
-      const sw = document.createElement('div');
-      sw.className = 'script-wrap';
-
-      const stoggle = document.createElement('button');
-      stoggle.className = 'script-toggle';
-      stoggle.setAttribute('aria-expanded', 'false');
-      stoggle.innerHTML = `
-        <span class="script-toggle-lbl">Script</span>
-        <span class="script-toggle-right">
-          <span class="script-step-count">${b.script.length} stappen</span>
-          <span class="s-chevron">▸</span>
-        </span>
-      `;
-
-      const sbody = document.createElement('div');
-      sbody.className = 'script-body';
-      sbody.id = 'script-' + b.id;
-
-      const ol = document.createElement('ol');
-      ol.className = 'script-steps';
-
-      b.script.forEach(step => {
-        const li = document.createElement('li');
-        li.className = 'script-step';
-        const inner = document.createElement('div');
-        inner.className = 'script-step-inner';
-        let html = `<div class="script-step-title">${step.title}</div>`;
-        if (step.line) html += `<div class="script-step-line">"${step.line}"</div>`;
-        if (step.note) html += `<div class="script-step-note">${step.note}</div>`;
-        inner.innerHTML = html;
-        li.appendChild(inner);
-        ol.appendChild(li);
-      });
-
-      sbody.appendChild(ol);
-
-      stoggle.addEventListener('click', () => {
-        const open = stoggle.getAttribute('aria-expanded') === 'true';
-        stoggle.setAttribute('aria-expanded', String(!open));
-        sbody.classList.toggle('open', !open);
-      });
-
-      sw.appendChild(stoggle);
-      sw.appendChild(sbody);
-      wrap.appendChild(sw);
-    }
+    buildScriptSection(b, wrap);
 
     // Tip
     if (b.tip) {
