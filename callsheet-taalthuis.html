@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Callsheet — Taalthuis Locatietour</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:            #f4f4f2;
+  --surface:       #ffffff;
+  --surface-2:     #fafaf8;
+  --border:        #e4e4e0;
+  --border-strong: #d0d0ca;
+  --text:          #1a1a1a;
+  --text-2:        #5a5a5a;
+  --text-3:        #9a9a9a;
+  --accent:        #1a56db;
+  --accent-bg:     #eef3ff;
+  --accent-border: #c7d9ff;
+  --green:         #0e7a4e;
+  --green-bg:      #ecfdf5;
+  --green-border:  #a7f3d0;
+  --amber:         #92400e;
+  --amber-bg:      #fffbeb;
+  --amber-border:  #fde68a;
+  --purple:        #5b21b6;
+  --purple-bg:     #f5f3ff;
+  --purple-border: #ddd6fe;
+  --red:           #b91c1c;
+  --red-bg:        #fff1f2;
+  --radius:        12px;
+  --radius-sm:     8px;
+  --shadow:        0 1px 3px rgba(0,0,0,0.07);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-bottom: 90px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── STICKY HEADER ── */
+#sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+#progress-wrap { padding: 10px 16px 8px; border-bottom: 1px solid var(--border); }
+#progress-meta { display: flex; justify-content: space-between; margin-bottom: 6px; }
+#progress-label { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); }
+#progress-pct   { font-size: 12px; font-weight: 700; color: var(--accent); }
+#progress-track { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+#progress-fill  { height: 100%; background: var(--accent); border-radius: 99px; width: 0%; transition: width .4s ease; }
+
+/* ── DAY TABS ── */
+#day-tabs { display: flex; }
+.day-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 10px 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  border-bottom: 3px solid transparent;
+  transition: border-color .15s, color .15s;
+  color: var(--text-3);
+  touch-action: manipulation;
+}
+.day-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-label { font-size: 14px; font-weight: 700; }
+.tab-date  { font-size: 11px; }
+
+/* ── LAYOUT ── */
+#wrap { padding: 0 12px 16px; max-width: 680px; margin: 0 auto; }
+
+/* ── STD CHECKLIST ── */
+.std-section { margin-bottom: 10px; }
+
+#std-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  touch-action: manipulation;
+  gap: 10px;
+}
+#std-toggle.open { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+
+#std-toggle-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+#std-done-count { font-size: 12px; font-weight: 700; color: var(--accent); }
+#std-chevron { font-size: 11px; color: var(--text-3); transition: transform .2s; }
+#std-toggle.open #std-chevron { transform: rotate(90deg); }
+
+#std-body {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  padding: 4px 16px 12px;
+}
+
+.std-item {
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: 1px solid var(--border);
+}
+.std-item:last-child { border-bottom: none; }
+
+.std-check-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.std-check-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border: 2px solid var(--border-strong);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.std-check-label input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.std-check-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 7px;
+  width: 6px; height: 10px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.std-num  { font-size: 11px; font-weight: 700; color: var(--accent); min-width: 18px; }
+.std-text { font-size: 14px; color: var(--text); transition: color .2s; }
+.std-check-label input:checked ~ .std-num  { color: var(--text-3); }
+.std-check-label input:checked ~ .std-text { color: var(--text-3); text-decoration: line-through; text-decoration-color: var(--text-3); }
+
+/* ── DAY HEADER ── */
+.day-header     { padding: 16px 4px 12px; }
+.day-title      { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
+.day-subtitle   { font-size: 14px; color: var(--text-2); margin-top: 1px; }
+.day-note       { font-size: 14px; color: var(--amber); margin-top: 8px; padding: 10px 14px; background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: var(--radius-sm); line-height: 1.4; }
+
+/* ── BLOCKS ── */
+.block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  transition: border-color .25s;
+}
+.block.all-done { border-color: var(--green-border); }
+
+/* ── BLOCK HEAD ── */
+.block-head { display: flex; align-items: stretch; }
+
+.time-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 10px;
+  min-width: 68px;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 2px;
+}
+.t-start { font-size: 13px; font-weight: 700; color: var(--text); }
+.t-arrow  { font-size: 9px; color: var(--text-3); }
+.t-end    { font-size: 13px; font-weight: 400; color: var(--text-2); }
+
+.block-meta {
+  flex: 1;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
+.block-tag  { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.tag-loc    { color: var(--accent); }
+.tag-travel { color: var(--text-3); }
+.block-name { font-size: 17px; font-weight: 700; line-height: 1.25; }
+.block-addr { font-size: 13px; color: var(--text-2); }
+.block-dur  { font-size: 13px; color: var(--text-3); margin-top: 1px; }
+
+.done-chip {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  border-radius: 99px;
+  padding: 3px 10px;
+  width: fit-content;
+}
+.block.all-done .done-chip { display: flex; }
+
+/* ── SECTION ── */
+.section { border-top: 1px solid var(--border); padding: 13px 16px; }
+.sec-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+
+/* ── PARKING ── */
+.parking-row { display: flex; gap: 10px; align-items: flex-start; }
+.p-icon { width: 30px; height: 30px; min-width: 30px; background: var(--accent); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; margin-top: 1px; }
+.p-main { font-size: 15px; color: var(--text); line-height: 1.4; }
+.p-note { font-size: 13px; color: var(--text-2); margin-top: 3px; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+.check-item { display: flex; align-items: center; border-radius: var(--radius-sm); }
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 4px;
+  cursor: pointer;
+  user-select: none;
+}
+.check-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border: 2px solid var(--border-strong);
+  border-radius: 7px;
+  cursor: pointer;
+  position: relative;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.check-label input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+.check-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 7px;
+  width: 7px; height: 11px;
+  border: 2.5px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.check-text { font-size: 15px; color: var(--text); line-height: 1.4; transition: color .2s; }
+.check-label input:checked ~ .check-text { color: var(--text-3); text-decoration: line-through; text-decoration-color: var(--text-3); }
+
+/* ── CTA dual boxes ── */
+.cta-pair { display: flex; flex-direction: column; gap: 8px; }
+.cta-item { position: relative; border-radius: 8px; padding: 10px 14px; }
+.cta-item-social { background: #eef3ff; border: 1px solid #c7d9ff; }
+.cta-item-website { background: #ecfdf5; border: 1px solid #a7f3d0; }
+.cta-item-label { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
+.cta-item-social .cta-item-label { color: #1a56db; }
+.cta-item-website .cta-item-label { color: #0e7a4e; }
+.cta-item-text { font-size: 13px; font-style: italic; line-height: 1.45; padding-right: 60px; color: #2a2a2a; }
+.btn-copy-sm {
+  position: absolute;
+  top: 10px; right: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+}
+.cta-item-social .btn-copy-sm { background: #c7d9ff; color: #1a56db; }
+.cta-item-website .btn-copy-sm { background: #a7f3d0; color: #0e7a4e; }
+.btn-copy-sm.copied { opacity: .7; }
+
+/* ── TIP ── */
+.tip-box {
+  display: flex;
+  gap: 10px;
+  background: var(--purple-bg);
+  border: 1px solid var(--purple-border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+}
+.tip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; color: var(--purple); }
+.tip-text { font-size: 14px; color: var(--purple); line-height: 1.45; }
+
+/* ── TRAVEL NOTE ── */
+.travel-note { padding: 8px 16px 14px; font-size: 14px; color: var(--text-3); }
+
+/* ── SCRIPT SECTION ── */
+.script-wrap { border-top: 1px solid var(--border); }
+
+.script-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  min-height: 48px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  touch-action: manipulation;
+}
+.script-toggle-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.script-toggle-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.script-step-count { font-size: 12px; font-weight: 600; color: var(--accent); }
+.s-chevron { font-size: 11px; color: var(--text-3); transition: transform .2s; }
+.script-toggle[aria-expanded="true"] .s-chevron { transform: rotate(90deg); }
+.script-toggle[aria-expanded="true"] { border-bottom: 1px solid var(--border); }
+
+.script-body {
+  display: none;
+  background: var(--accent-bg);
+  padding: 10px 16px 14px;
+}
+.script-body.open { display: block; }
+
+.script-steps { list-style: none; }
+
+.script-step {
+  display: flex;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--accent-border);
+}
+.script-step:last-child { border-bottom: none; }
+
+.script-step-inner { flex: 1; }
+.script-step-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.script-step-line  { font-size: 14px; font-style: italic; color: #1e3a8a; margin-top: 5px; line-height: 1.5; }
+.script-step-note  { font-size: 13px; color: var(--text-2); margin-top: 5px; line-height: 1.4; }
+
+/* Script deel header */
+.script-deel {
+  background: #f0f0ee;
+  padding: 7px 10px;
+  margin: 8px 0 4px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #5a5a5a;
+}
+
+/* Knipmoment banner */
+.script-knip {
+  margin: 10px 0;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-align: center;
+}
+.script-knip-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c2410c;
+}
+.script-knip-sub {
+  font-size: 11px;
+  color: #9a3412;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* Role labels */
+.script-role {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+.role-mikki { background: #eef3ff; color: #1a56db; }
+.role-broll { background: #f4f4f2; color: #6b6b6b; }
+
+/* Opt A/B sub-items */
+.script-opt {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.opt-label {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+.opt-a { background: #eef3ff; color: #1a56db; }
+.opt-b { background: #ecfdf5; color: #0e7a4e; }
+.opt-text { color: #2a2a2a; font-style: italic; }
+
+/* ── FOOTER ── */
+#footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+}
+.foot-item { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.foot-val  { font-size: 19px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
+.foot-key  { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); }
+.foot-div  { width: 1px; height: 36px; background: var(--border); }
+
+@media (min-width: 600px) {
+  #wrap { padding: 0 20px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<div id="sticky-top">
+  <div id="progress-wrap">
+    <div id="progress-meta">
+      <span id="progress-label">Voortgang dag</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div id="progress-track"><div id="progress-fill"></div></div>
+  </div>
+  <div id="day-tabs">
+    <button class="day-tab active" data-day="0"><span class="tab-label">Dag 1</span><span class="tab-date">Wo 3 jun</span></button>
+    <button class="day-tab"        data-day="1"><span class="tab-label">Dag 2</span><span class="tab-date">Di 10 jun</span></button>
+    <button class="day-tab"        data-day="2"><span class="tab-label">Dag 3</span><span class="tab-date">Wo 11 jun</span></button>
+  </div>
+</div>
+
+<!-- MAIN WRAPPER -->
+<div id="wrap">
+
+  <!-- STANDARD CHECKLIST -->
+  <div class="std-section">
+    <button id="std-toggle" onclick="toggleStd()">
+      <span>Standaard checklist — alle locaties</span>
+      <span id="std-toggle-right">
+        <span id="std-done-count">0/9</span>
+        <span id="std-chevron">▸</span>
+      </span>
+    </button>
+    <div id="std-body">
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="0"><span class="std-num">1</span><span class="std-text">B-roll van de stad en de highlights (sfeer en route)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="1"><span class="std-num">2</span><span class="std-text">Looproute in beeld (presentator die voorop loopt / POV)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="2"><span class="std-num">3</span><span class="std-text">HET KNIPMOMENT: laat de presentator een duidelijke pauze vallen tussen het social media-deel en het praktische website-deel</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="3"><span class="std-num">4</span><span class="std-text">Twee intro-versies opnemen: "Welkom bij..." (website) en "Hier is het!" (social backup)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="4"><span class="std-num">5</span><span class="std-text">Praktische info buiten: de voordeur & naambordje duidelijk in beeld</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="5"><span class="std-num">6</span><span class="std-text">Praktische info buiten: op welke bel moet je drukken? (close-up)</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="6"><span class="std-num">7</span><span class="std-text">Praktische info binnen: naar welke verdieping / lift of trap?</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="7"><span class="std-num">8</span><span class="std-text">Binnenkomst lokaal: sfeer laten zien</span></label></div>
+      <div class="std-item"><label class="std-check-label"><input type="checkbox" data-std="8"><span class="std-num">9</span><span class="std-text">Twee CTA's inspreken: DM-reactie (Social) en aanmeld-oproep (Website)</span></label></div>
+    </div>
+  </div>
+
+  <!-- DAY CONTENT (dynamic) -->
+  <div id="day-content"></div>
+
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+  <div class="foot-item"><span class="foot-val" id="f-day-hrs">—</span><span class="foot-key">Uren vandaag</span></div>
+  <div class="foot-div"></div>
+  <div class="foot-item"><span class="foot-val" id="f-total-hrs">—</span><span class="foot-key">Totaal 3 dagen</span></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+const DAYS = [
+
+/* ── DAG 1: Noord-Holland (Wo 3 jun) ── */
+{
+  id: 'dag1', label: 'Dag 1 — Woensdag 3 juni', subtitle: 'Noord-Holland',
+  note: 'Later vertrekken om de ochtendspits te vermijden. Dag rondt mooi af rond 17:00.',
+  blocks: [
+    { id:'r-hl-hilv', type:'travel', start:'09:15', end:'10:15', name:'Reistijd Haarlem → Hilversum' },
+    {
+      id:'loc-hilversum', type:'location', start:'10:15', end:'11:45',
+      name:'Hilversum', address:'Oude Torenstraat 41',
+      parking:'Parkeergarage Gooische Brink — Brinkweg 1', parkingNote:null,
+      shots:['Station Hilversum','Mediastad architectuur (Beeld en Geluid, street art)','Kerkbrink & Fotomuseum','Hillywings mural','Locatie voor de deur','Voordeur & naambordje in beeld','Bel close-up','Binnenkant lokaal'],
+      ctaSocial:'Wil jij Nederlands leren in Hilversum? Reageer dan met HILVERSUM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Hilversum? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij station', line:'We zijn net aangekomen in Hilversum! De Taalthuis locatie ligt op ongeveer tien minuutjes lopen van het station. Ga je mee?'},
+        {type:'step', role:'B-roll/V.O.', title:'Wandelroute highlights', note:'Hilversum is echt een mediastad. Rondom het station zie je gelijk veel moderne architectuur en street art! [B-roll: Instituut Beeld en Geluid, street art]. We lopen via de Kerkbrink, één van de mooiste pleinen van Hilversum vol oude bomen, terrassen en het Fotomuseum. En check deze bekende kleurrijke Hillywings mural waar we langs komen, perfect voor een foto!'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Hilversum aan de Oude Torenstraat 41!', optB:'We staan voor de Taalthuis locatie in Hilversum! Zoals je ziet, ligt het super centraal in het centrum.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Loop je mee naar binnen? Je gaat hier door de voordeur, drukt op deze bel [aanwijzen/klikken] en we gaan naar de [juiste verdieping invullen].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Focus op de voordeur, close-up van de specifieke deurbel, de trap of lift omhoog, en sfeerbeelden van het ingerichte klaslokaal.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Hilversum? Reageer dan met HILVERSUM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Hilversum? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-hilv-amst', type:'travel', start:'11:45', end:'12:15', name:'Reistijd → Amstelveen', note:'Tip: haal onderweg een snelle lunch!' },
+    {
+      id:'loc-amstelveen', type:'location', start:'12:15', end:'13:45',
+      name:'Amstelveen', address:'Maalderij 21D',
+      parking:'Start: Q-Park Stadsplein (centrum) voor busshots', parkingNote:'Rijd daarna door naar Maalderij 21D — parkeren op het industrieterrein.',
+      shots:['Stadshart Amstelveen (B-roll)','(Fake) instappen bus','Route / uitzicht vanuit bus','Aankomst boven sportschool','Praktische info locatie (voordeur, bel, verdieping)','Sfeerbeelden wandelroute bij De Poel'],
+      ctaSocial:'Wil jij Nederlands leren in Amstelveen? Reageer dan met AMSTELVEEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Amstelveen? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening in Stadshart', line:'We zijn in Amstelveen! Hier opent Taalthuis per september een gloednieuwe leslocatie. Ga je mee?'},
+        {type:'step', role:'B-roll', title:'Busroute (fake)', note:'(Fake) instappen in de bus, route, uitzicht vanuit de bus richting locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Amstelveen aan de Maalderij 21D!', optB:'Hier is het! Aan de Maalderij 21D.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Het ligt op een bedrijventerrein, dus je kunt hier super makkelijk parkeren. Onze locatie zit precies boven de sportschool. Je gaat door deze voordeur [aanwijzen/klikken op specifieke bel] en dan naar de [juiste verdieping].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Huisnummer, deur, bordje sportschool, trap of lift, leslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Omgeving: De Poel'},
+        {type:'step', role:'Mikki', title:'Sfeer bij De Poel', line:'En als je na de lessen toe bent aan een wandeling, dan is dit een prachtige route langs De Poel om even uit te waaien!'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Amstelveen? Reageer dan met AMSTELVEEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Amstelveen? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-amst-adam', type:'travel', start:'13:45', end:'14:15', name:'Reistijd → Amsterdam' },
+    {
+      id:'loc-amsterdam', type:'location', start:'14:15', end:'16:15',
+      name:'Amsterdam', address:'IJsselstraat 24',
+      parking:'Rooseveltlaan — Rivierenbuurt (straatparkeren)', parkingNote:null,
+      tip:'Montage-tip: pak vanaf De Pijp de Noord-Zuidlijn richting Centraal. Stap er kort uit bij Ferdinand Bol / Albert Cuyp, Rokin, etc. Sluit af bij Centraal Station. Disclaimer in de video: dit is niet de snelste route, maar wel de leukste.',
+      shots:['Aan de Amstel (oever shot)','Sfeer Rivierenbuurt richting IJsselstraat','Voordeur & naambordje','Deurbel close-up','Binnenkomst & leslokaal','B-roll route: Ferdinand Bolstraat → Albert Cuypmarkt','B-roll route: Museumplein → Vondelpark → Leidseplein → Rokin → Centraal','Aankomst Amsterdam Centraal'],
+      ctaSocial:'Wil jij Nederlands leren in Amsterdam? Reageer dan met AMSTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Amsterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening aan de Amstel', line:'We zijn in Amsterdam! In de hoofdstad hebben wij uiteraard ook een leslocatie. Loop je met ons mee?'},
+        {type:'step', role:'B-roll', title:'Sfeer Rivierenbuurt', note:'Sfeerbeelden van de Amstel en de karakteristieke straten van de Rivierenbuurt richting de IJsselstraat.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Amsterdam aan de IJsselstraat 24! Het gebouw ligt dichtbij het stadscentrum en is goed bereikbaar met het openbaar vervoer.', optB:'Hier is het! Aan de IJsselstraat 24.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Je gaat hier door de voordeur, belt aan bij deze knop met het logo [aanwijzen/klikken] en loopt door naar de [juiste verdieping invullen]. Dit is waar onze lessen plaatsvinden!'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Voordeur, naambordje, deurbel close-up, binnenkomst, sfeervolle shots van het klaslokaal.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Route naar Centraal (Social Media)'},
+        {type:'step', role:'Mikki', title:'Route naar Amsterdam Centraal', line:'Hmm, hoe kom ik dan nu weer op Amsterdam Centraal? Ik laat het je zien!'},
+        {type:'step', role:'B-roll', title:'Snelle ritmische montage', note:'Ferdinand Bolstraat → Albert Cuypmarkt → Museumplein → Vondelpark → Leidseplein → Rokin → Amsterdam Centraal.'},
+        {type:'step', role:'Mikki', title:'Aankomst Centraal', line:'Zo, we zijn er! [Tekst in beeld: Disclaimer] Dit is natuurlijk niet de allersnelste route naar het station... maar wel veruit de leukste!'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Amsterdam? Reageer dan met AMSTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Amsterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-adam-hl', type:'travel', start:'16:15', end:'17:00', name:'Reistijd Amsterdam → Haarlem', note:'Wrap Dag 1' },
+  ]
+},
+
+/* ── DAG 2: Zuid-Holland (Di 10 jun) ── */
+{
+  id: 'dag2', label: 'Dag 2 — Dinsdag 10 juni', subtitle: 'Zuid-Holland',
+  note: 'Ruime planning om de verkeersdrukte rondom Rotterdam en Den Haag op te vangen.',
+  blocks: [
+    { id:'r-hl-rot', type:'travel', start:'08:15', end:'09:30', name:'Reistijd Haarlem → Rotterdam' },
+    {
+      id:'loc-rotterdam', type:'location', start:'09:30', end:'11:30',
+      name:'Rotterdam', address:'Oostzeedijk Beneden 107',
+      parking:'Eerst: Boompjes of Willemsplein (Erasmusbrug shots)', parkingNote:'Rijd daarna door en parkeer op de Oostzeedijk zelf.',
+      shots:['Erasmusbrug langs het water (B-roll)','Looproute Oostzeedijk','Voordeur & naambordje','Deurbel close-up (Taalthuis-logo)','Verdieping / trap of lift','Leslokaal sfeer'],
+      ctaSocial:'Wil jij Nederlands leren in Rotterdam? Reageer dan met ROTTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Rotterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening langs de Erasmusbrug', line:'We zijn in Rotterdam! Vanaf september kan je ook op deze prachtige locatie Nederlandse cursussen volgen bij Taalthuis! Loop je mee naar de leslocatie?'},
+        {type:'step', role:'B-roll', title:'Erasmusbrug shots', note:'Dynamische shots van de Erasmusbrug, het water en de wandeling richting de locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Rotterdam aan de Oostzeedijk Beneden 107! Het gebouw is goed bereikbaar met het openbaar vervoer.', optB:'De locatie is gelegen op de gezellige Oostzeedijk op nummer 107!'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Ga je mee naar binnen? Je gaat hier door de voordeur, drukt op deze bel [aanwijzen/klikken] en dan lopen we door naar de [juiste verdieping invullen].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Voordeur aan de Oostzeedijk, deurbel close-up met Taalthuis-logo, route in het pand, sfeerbeelden nieuw klaslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Rotterdam? Reageer dan met ROTTERDAM en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Rotterdam? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-rot-dh', type:'travel', start:'11:30', end:'12:15', name:'Reistijd → Den Haag' },
+    {
+      id:'loc-denhaag', type:'location', start:'12:15', end:'14:30',
+      name:'Den Haag', address:'Frederik Hendriklaan 85A',
+      badge:'LUNCH',
+      parking:'Statenkwartier (straatparkeren) voor locatieshots', parkingNote:'Rijd daarna door naar Parkeergarage Scheveningen Bad (Zwolsestraat) voor strandshots.',
+      tip:'Neem direct de tijd voor lunch op het terrasje in Scheveningen!',
+      shots:['Sfeerbeelden Frederik Hendriklaan (\'De Fred\')','Voordeur & naambordje','Deurbel close-up (Taalthuis-logo)','Binnenkomst locatie (1e verdieping)','Leslokaal sfeer','Scheveningen strand: terrasje','Spa Rood bestellen'],
+      ctaSocial:'Wil jij Nederlands leren in Den Haag? Reageer dan met DEN HAAG en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Den Haag? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening in de Frederik Hendriklaan ("De Fred")', line:'We zijn in Den Haag! In het gezellige Statenkwartier zit de Taalthuis locatie. Loop je met ons mee?'},
+        {type:'step', role:'B-roll', title:'Sfeer De Fred', note:'Levendige sfeerbeelden van de Frederik Hendriklaan en de wandeling richting de locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Den Haag aan de Frederik Hendriklaan 85A! Het gebouw ligt dichtbij het stadscentrum en is goed bereikbaar met het openbaar vervoer.', optB:'Hier moeten we zijn! Aan de Frederik Hendriklaan.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'We gaan hier door de voordeur, we drukken op deze bel met het Taalthuis-logo [aanwijzen/klikken], en dan lopen we direct door naar de eerste verdieping.'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Close-up voordeur, bellenpaneel, route (trap/lift) naar 1e verdieping, sfeerbeelden leslokaal.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Scheveningen (alleen Social Media)'},
+        {type:'step', role:'Mikki', title:'Scheveningen strand', line:'De Taalthuis locatie zit trouwens vlakbij Scheveningen! Heerlijk om in dit zomerse weer even af te koelen. Én een goede plek om je Nederlands te leren!'},
+        {type:'step', role:'Mikki', title:'Drankje bestellen (ook lunch!)', line:'Mag ik een spa rood, alsjeblieft?'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Den Haag? Reageer dan met DEN HAAG en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Den Haag? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-dh-lei', type:'travel', start:'14:30', end:'15:15', name:'Reistijd → Leiden' },
+    {
+      id:'loc-leiden', type:'location', start:'15:15', end:'17:00',
+      name:'Leiden', address:'Schipholweg 66',
+      parking:'Parkeergarage Morspoort — Bloemwijkstraat 2', parkingNote:null,
+      shots:['Leiden Centraal (B-roll)','Wandelroute naar locatie','Tocht helemaal naar de 3e verdieping','Voordeur & naambordje','Deurbel close-up','Leslokaal sfeer','B-roll stad: Molenmuseum de Valk','B-roll stad: Wereldmuseum, Morspoort, Hortus Botanicus, Burcht'],
+      ctaSocial:'Wil jij Nederlands leren in Leiden? Reageer dan met LEIDEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Leiden? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij Leiden Centraal', line:'We zijn in Leiden! De leslocatie van Taalthuis zit op maar 5 minuutjes lopen. Loop je met ons mee?'},
+        {type:'step', role:'B-roll', title:'Station en wandelroute', note:'Sfeerbeelden van het station en de wandelroute richting de locatie.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Leiden aan de Schipholweg 66! Het gebouw ligt dichtbij het stadscentrum en het centraal station van Leiden.', optB:'We zijn er! Aan de Schipholweg 66.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'We gaan hier door de voordeur, drukken op deze bel [aanwijzen/klikken], en we gaan helemaal naar boven, naar de derde verdieping. Hier vind je onze leslokalen!'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Duidelijke focus op de entree, deurbel, lift of trap naar 3e verdieping, klaslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Centrum Leiden (alleen Social Media)'},
+        {type:'step', role:'Mikki', title:'Highlights van Leiden', line:'Leiden is verder een hele gezellige stad! Zo heb je het Molenmuseum de Valk, Wereldmuseum, de Morspoort, de Hortus Botanicus en de Burcht! Allemaal plekken om te bezoeken na je cursus Nederlands.'},
+        {type:'step', role:'B-roll', title:'Sfeerbeelden stad', note:'Flitsen of sfeerbeelden van bezienswaardigheden en het historische centrum.'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Leiden? Reageer dan met LEIDEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Leiden? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-lei-hl', type:'travel', start:'17:00', end:'17:45', name:'Reistijd Leiden → Haarlem', note:'Wrap Dag 2' },
+  ]
+},
+
+/* ── DAG 3: Zuid/Midden (Wo 11 jun) ── */
+{
+  id: 'dag3', label: 'Dag 3 — Woensdag 11 juni', subtitle: 'Zuid / Midden',
+  note: 'Vroeg vertrekken om de files richting het zuiden voor te zijn.',
+  blocks: [
+    { id:'r-hl-eindhoven', type:'travel', start:'07:30', end:'09:30', name:'Reistijd Haarlem → Eindhoven' },
+    {
+      id:'loc-eindhoven', type:'location', start:'09:30', end:'11:30',
+      name:'Eindhoven', address:'Jan van Hooffstraat 8F',
+      parking:'Q-Park de Bijenkorf — Schimmelt 50', parkingNote:'Ligt direct naast je eerste filmlocaties.',
+      shots:['Station Eindhoven','Blob & Lichttoren (B-roll)','De Markt','Wandelroute naar locatie','Voordeur & naambordje Jan van Hooffstraat 8F','Deurbel close-up','Verdieping / trap of lift','Leslokaal van binnen'],
+      ctaSocial:'Wil jij Nederlands leren in Eindhoven? Reageer dan met EINDHOVEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Eindhoven? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij station Eindhoven', line:'We zijn in Eindhoven! Onze Taalthuis locatie ligt maar op tien minuutjes lopen van het station. Loop je mee?'},
+        {type:'step', role:'B-roll/V.O.', title:'Wandelroute langs highlights', note:'Lopen langs de Blob en de Lichttoren. V.O.: "Wist je dat Eindhoven door deze oude Philips-fabriek ook wel de lichtstad wordt genoemd?" Shots van het Philips/Van Abbe museum.'},
+        {type:'step', role:'Mikki', title:'Op de Markt', line:'En zo zijn we alweer op het gezelligste plein van Eindhoven! Taalthuis zit hier om de hoek.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Eindhoven aan de Jan van Hooffstraat 8F! De locatie ligt midden in het centrum en is maar tien minuutjes lopen vanaf het station.', optB:'Hier is het! Aan de Jan van Hooffstraat 8F.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'De locatie ligt midden in het centrum. Je gaat door deze voordeur, drukt hier op de bel [aanwijzen/klikken] en dan gaan we naar de [juiste verdieping invullen].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Looproute vanaf de Markt, voordeur, close-up juiste deurbel, trap of lift naar verdieping, shots leslokaal van binnen.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Eindhoven? Reageer dan met EINDHOVEN en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Eindhoven? Bekijk het actuele rooster en de startdata, en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-eindhoven-db', type:'travel', start:'11:30', end:'12:15', name:'Reistijd → Den Bosch' },
+    {
+      id:'loc-denbosch', type:'location', start:'12:15', end:'14:15',
+      name:'Den Bosch', address:'Maaslandstraat 2A',
+      badge:'LUNCH',
+      parking:'Q-Park Station — Colvenierstraat 20', parkingNote:null,
+      tip:'Neem hier direct de tijd voor lunch bij Jan de Groot!',
+      shots:['Opening in klaslokaal (uitzicht op station)','Praktische info: voordeur, bel met logo, lift/trap','Wandeling naar Jan de Groot','Bossche bol kopen en proeven (shots in de winkel)'],
+      ctaSocial:'Wil jij Nederlands leren in Den Bosch? Reageer dan met DEN BOSCH en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Den Bosch? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening in het klaslokaal', line:'Ik zit hier in het klaslokaal van de Taalthuis locatie in Den Bosch. Kijk nou, wat een prachtig uitzicht we hier op het station hebben! Het is maar 5 minuutjes lopen.'},
+        {type:'step', role:'B-roll', title:'Sfeer lokaal', note:'Sfeerimpressie van het lokaal en het uitzicht naar buiten op het station.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Den Bosch aan de Maaslandstraat 2A! De lessen vinden plaats in het gebouw van het Studiecentrum. Het gebouw ligt direct tegenover het centraal station.', optB:'Maar hoe kom je hier nou precies binnen? Ik laat het je zien!'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Je gaat hier door de voordeur, drukt op deze bel met het logo [aanwijzen/klikken] en dan nemen we de trap of lift naar de [juiste verdieping].'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Huisnummer, voordeur, close-up specifieke deurbel, route naar verdieping.'},
+        {type:'deel', title:'Deel 3 — Omgeving: Bossche bollen bij Jan de Groot (+ lunch!)'},
+        {type:'step', role:'Mikki', title:'Onderweg naar Jan de Groot', line:'En mocht je nou na je Nederlandse les zin hebben gekregen in een Nederlandse snack, dan moet je naar Jan de Groot gaan. Loop je mee?'},
+        {type:'step', role:'Mikki', title:'Bij de bakker', line:'Hier verkopen ze de allerbeste Bossche bollen van Nederland! Zullen we er eentje proeven?'},
+        {type:'step', role:'B-roll', title:'Bossche bol shots', note:'Lekkere shots van de bollen in de winkel. Direct ook lunchen hier!'},
+        {type:'deel', title:'Deel 4 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Den Bosch? Reageer dan met DEN BOSCH en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Den Bosch? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-db-utrecht', type:'travel', start:'14:15', end:'15:00', name:'Reistijd → Utrecht' },
+    {
+      id:'loc-utrecht', type:'location', start:'15:00', end:'17:00',
+      name:'Utrecht', address:'Maliebaan 87',
+      parking:'Maliebaan — betaald straatparkeren', parkingNote:'Parkeer dicht bij het Spoorwegmuseum.',
+      shots:['Station Maliebaan','Spoorwegmuseum (B-roll)','Looproute in de straat','Grote deuren locatie','Trap naar 2e verdieping','Leslokaal van binnen'],
+      ctaSocial:'Wil jij Nederlands leren in Utrecht? Reageer dan met UTRECHT en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!',
+      ctaWebsite:'Wil jij Nederlands leren in Utrecht? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!',
+      script:[
+        {type:'deel', title:'Deel 1 — Social Media: Sfeer & Highlights'},
+        {type:'step', role:'Mikki', title:'Opening bij station Maliebaan', line:'We zijn in Utrecht! Vanaf station Maliebaan is de Taalthuis locatie tien minuutjes lopen. Loop je mee? Als we het station uitlopen komen we langs het Spoorwegmuseum. En als je deze straat uitloopt, kom je vanzelf bij het centrum!'},
+        {type:'step', role:'B-roll', title:'Station en wandelroute', note:'Beelden van station Maliebaan, het Spoorwegmuseum en de wandelroute over de straat.'},
+        {type:'knip'},
+        {type:'deel', title:'Deel 2 — Website & Social: Praktische info'},
+        {type:'step', role:'Mikki', title:'Opening locatie (neem 2 opties op)', optA:'Welkom bij Taalthuis Utrecht aan de Maliebaan 87! Het gebouw ligt dichtbij het stadscentrum en is goed bereikbaar met het openbaar vervoer.', optB:'Hier is het! Aan de statige Maliebaan 87.'},
+        {type:'step', role:'Mikki', title:'Looproute naar binnen', line:'Omdat cursisten ons soms lastig kunnen vinden, laat ik je precies zien waar je moet zijn! Goed om te weten: vanaf Utrecht Centraal is het ongeveer 30 minuutjes lopen. Je gaat door deze grote deur heen [wijst voordeur aan], drukt op deze bel, en dan gaan we met de trap naar de tweede verdieping. Hier vind je onze leslokalen!'},
+        {type:'step', role:'B-roll', title:'Praktische shots', note:'Extra duidelijke shots van gevel/huisnummer, voordeur, bellenpaneel (wát precies indrukken?), trap naar 2e verdieping, leslokalen van binnen.'},
+        {type:'deel', title:'Deel 3 — Afsluiting: neem beide versies op'},
+        {type:'step', role:'Mikki', title:'CTA (neem 2 opties op)', optA:'[Social] Wil jij Nederlands leren in Utrecht? Reageer dan met UTRECHT en krijg direct alle informatie over deze locatie, het actuele rooster en startdata in jouw DM!', optB:'[Website] Wil jij Nederlands leren in Utrecht? Bekijk het actuele rooster en de startdata en meld je direct aan. Hopelijk tot snel in de les!'},
+      ]
+    },
+    { id:'r-utrecht-hl', type:'travel', start:'17:00', end:'18:00', name:'Reistijd Utrecht → Haarlem', note:'Wrap Dag 3' },
+  ]
+}
+
+]; // end DAYS
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+const SK = 'taalthuis-v4';
+let state = {};
+try { state = JSON.parse(localStorage.getItem(SK) || '{}'); } catch(e) {}
+function save() { try { localStorage.setItem(SK, JSON.stringify(state)); } catch(e) {} }
+function bs(id) { if (!state[id]) state[id] = { checks: {} }; return state[id]; }
+function stdState() { if (!state['std']) state['std'] = {}; return state['std']; }
+
+/* ═══════════════════════════════════════════
+   TIME UTILS
+═══════════════════════════════════════════ */
+function mins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
+function hm(m) { if(m<0)m=Math.abs(m); const h=Math.floor(m/60),mm=m%60; if(h===0)return mm+'m'; if(mm===0)return h+'u'; return h+'u '+mm+'m'; }
+
+/* ═══════════════════════════════════════════
+   ACTIVE DAY
+═══════════════════════════════════════════ */
+let activeDay = 0;
+
+function switchDay(idx) {
+  activeDay = idx;
+  document.querySelectorAll('.day-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  renderDay();
+}
+
+/* ═══════════════════════════════════════════
+   STANDARD CHECKLIST
+═══════════════════════════════════════════ */
+function toggleStd() {
+  const btn  = document.getElementById('std-toggle');
+  const body = document.getElementById('std-body');
+  const open = btn.classList.contains('open');
+  btn.classList.toggle('open', !open);
+  body.style.display = open ? 'none' : 'block';
+}
+
+function initStdChecklist() {
+  const st = stdState();
+  document.querySelectorAll('[data-std]').forEach(cb => {
+    const i = Number(cb.dataset.std);
+    cb.checked = !!st[i];
+    cb.addEventListener('change', () => {
+      stdState()[i] = cb.checked;
+      save();
+      updateStdCount();
+    });
+  });
+  updateStdCount();
+}
+
+function updateStdCount() {
+  const st = stdState();
+  const done = Object.values(st).filter(Boolean).length;
+  document.getElementById('std-done-count').textContent = done + '/9';
+}
+
+/* ═══════════════════════════════════════════
+   RENDER DAY
+═══════════════════════════════════════════ */
+function renderDay() {
+  const day = DAYS[activeDay];
+  const c = document.getElementById('day-content');
+  c.innerHTML = '';
+
+  const hdr = document.createElement('div');
+  hdr.className = 'day-header';
+  hdr.innerHTML = `
+    <div class="day-title">${day.label}</div>
+    <div class="day-subtitle">${day.subtitle}</div>
+    ${day.note ? `<div class="day-note">${day.note}</div>` : ''}
+  `;
+  c.appendChild(hdr);
+
+  day.blocks.forEach(b => c.appendChild(buildBlock(b)));
+  updateGlobal();
+}
+
+/* ═══════════════════════════════════════════
+   BUILD SCRIPT SECTION
+═══════════════════════════════════════════ */
+function buildScriptSection(b, wrap) {
+  if (!b.script || !b.script.length) return;
+
+  const sw = document.createElement('div');
+  sw.className = 'script-wrap';
+
+  const stepCount = b.script.filter(s => s.type === 'step').length;
+
+  const stoggle = document.createElement('button');
+  stoggle.className = 'script-toggle';
+  stoggle.setAttribute('aria-expanded', 'false');
+  stoggle.innerHTML = `
+    <span class="script-toggle-lbl">Script</span>
+    <span class="script-toggle-right">
+      <span class="script-step-count">${stepCount} stappen</span>
+      <span class="s-chevron">▸</span>
+    </span>
+  `;
+
+  const sbody = document.createElement('div');
+  sbody.className = 'script-body';
+  sbody.id = 'script-' + b.id;
+
+  const ol = document.createElement('ol');
+  ol.className = 'script-steps';
+
+  let stepNum = 0;
+  b.script.forEach(item => {
+    if (item.type === 'deel') {
+      const d = document.createElement('div');
+      d.className = 'script-deel';
+      d.textContent = item.title;
+      ol.appendChild(d);
+    } else if (item.type === 'knip') {
+      const k = document.createElement('div');
+      k.className = 'script-knip';
+      k.innerHTML = '<div class="script-knip-title">✂ KNIPMOMENT VOOR DE EDIT ✂</div><div class="script-knip-sub">Vanaf hier is de video los te knippen voor de website</div>';
+      ol.appendChild(k);
+    } else if (item.type === 'step') {
+      stepNum++;
+      const li = document.createElement('li');
+      li.className = 'script-step';
+      const roleClass = item.role && item.role.startsWith('Mikki') ? 'role-mikki' : 'role-broll';
+      let html = `<div class="script-step-inner">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-size:12px;font-weight:700;color:#9a9a9a;min-width:18px;">${stepNum}</span>
+          <span class="script-role ${roleClass}">${item.role || 'Mikki'}</span>
+          <span class="script-step-title">${item.title}</span>
+        </div>`;
+      if (item.line) html += `<div class="script-step-line">"${item.line}"</div>`;
+      if (item.note) html += `<div class="script-step-note">${item.note}</div>`;
+      if (item.optA || item.optB) {
+        if (item.optA) html += `<div class="script-opt"><span class="opt-label opt-a">A</span><span class="opt-text">"${item.optA}"</span></div>`;
+        if (item.optB) html += `<div class="script-opt"><span class="opt-label opt-b">B</span><span class="opt-text">"${item.optB}"</span></div>`;
+      }
+      html += '</div>';
+      li.innerHTML = html;
+      ol.appendChild(li);
+    }
+  });
+
+  sbody.appendChild(ol);
+
+  stoggle.addEventListener('click', () => {
+    const open = stoggle.getAttribute('aria-expanded') === 'true';
+    stoggle.setAttribute('aria-expanded', String(!open));
+    sbody.classList.toggle('open', !open);
+  });
+
+  sw.appendChild(stoggle);
+  sw.appendChild(sbody);
+  wrap.appendChild(sw);
+}
+
+/* ═══════════════════════════════════════════
+   BUILD BLOCK
+═══════════════════════════════════════════ */
+function buildBlock(b) {
+  const dur = mins(b.end) - mins(b.start);
+  const wrap = document.createElement('div');
+  wrap.className = `block type-${b.type}`;
+  wrap.dataset.id = b.id;
+
+  // Head
+  const head = document.createElement('div');
+  head.className = 'block-head';
+  head.innerHTML = `
+    <div class="time-col">
+      <span class="t-start">${b.start}</span>
+      <span class="t-arrow">▾</span>
+      <span class="t-end">${b.end}</span>
+    </div>
+    <div class="block-meta">
+      <span class="block-tag ${b.type==='location'?'tag-loc':'tag-travel'}">
+        ${b.type==='location'?'Locatie':'Reistijd'}${b.badge?' &middot; '+b.badge:''}
+      </span>
+      <span class="block-name">${b.name}</span>
+      ${b.address?`<span class="block-addr">${b.address}</span>`:''}
+      <span class="block-dur">${hm(dur)}</span>
+      ${b.type==='location'?'<span class="done-chip"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Afgerond</span>':''}
+    </div>
+  `;
+  wrap.appendChild(head);
+
+  if (b.type === 'travel' && b.note) {
+    const tn = document.createElement('div');
+    tn.className = 'travel-note';
+    tn.textContent = b.note;
+    wrap.appendChild(tn);
+  }
+
+  if (b.type === 'location') {
+    // Parking
+    if (b.parking) {
+      const ps = document.createElement('div');
+      ps.className = 'section';
+      ps.innerHTML = `<div class="sec-label">Parkeren</div>
+        <div class="parking-row">
+          <div class="p-icon">P</div>
+          <div>
+            <div class="p-main">${b.parking}</div>
+            ${b.parkingNote?`<div class="p-note">${b.parkingNote}</div>`:''}
+          </div>
+        </div>`;
+      wrap.appendChild(ps);
+    }
+
+    // Shots checklist
+    const cs = document.createElement('div');
+    cs.className = 'section';
+    const slbl = document.createElement('div');
+    slbl.className = 'sec-label';
+    slbl.textContent = 'Shots';
+    cs.appendChild(slbl);
+
+    const ul = document.createElement('ul');
+    ul.className = 'checklist';
+    const bst = bs(b.id);
+    b.shots.forEach((shot, i) => {
+      const li = document.createElement('li');
+      li.className = 'check-item';
+      const lbl = document.createElement('label');
+      lbl.className = 'check-label';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!bst.checks[i];
+      cb.addEventListener('change', () => {
+        bs(b.id).checks[i] = cb.checked;
+        save();
+        updateBlock(b.id);
+        updateGlobal();
+      });
+      const sp = document.createElement('span');
+      sp.className = 'check-text';
+      sp.textContent = shot;
+      lbl.appendChild(cb);
+      lbl.appendChild(sp);
+      li.appendChild(lbl);
+      ul.appendChild(li);
+    });
+    cs.appendChild(ul);
+    wrap.appendChild(cs);
+
+    // Script
+    buildScriptSection(b, wrap);
+
+    // Tip
+    if (b.tip) {
+      const ts = document.createElement('div');
+      ts.className = 'section';
+      ts.innerHTML = `<div class="tip-box"><div class="tip-icon">&#9432;</div><div class="tip-text">${b.tip}</div></div>`;
+      wrap.appendChild(ts);
+    }
+  }
+
+  if (b.type === 'location') updateBlock(b.id);
+
+  return wrap;
+}
+
+/* ═══════════════════════════════════════════
+   UPDATE BLOCK DONE STATE
+═══════════════════════════════════════════ */
+function updateBlock(id) {
+  const b = DAYS[activeDay].blocks.find(x => x.id === id);
+  if (!b || b.type !== 'location') return;
+  const bst = bs(id);
+  const done = Object.values(bst.checks).filter(Boolean).length;
+  const el = document.querySelector(`.block[data-id="${id}"]`);
+  if (el) el.classList.toggle('all-done', done === b.shots.length);
+}
+
+/* ═══════════════════════════════════════════
+   UPDATE GLOBAL STATS
+═══════════════════════════════════════════ */
+function updateGlobal() {
+  // Progress bar (shots current day)
+  const day = DAYS[activeDay];
+  let totalShots = 0, doneShots = 0;
+  day.blocks.forEach(b => {
+    if (b.type === 'location' && b.shots) {
+      totalShots += b.shots.length;
+      doneShots  += Object.values(bs(b.id).checks).filter(Boolean).length;
+    }
+  });
+  const pct = totalShots > 0 ? Math.round((doneShots / totalShots) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent  = pct + '%';
+
+  // Footer: planned hours current day
+  const first = day.blocks[0], last = day.blocks[day.blocks.length - 1];
+  document.getElementById('f-day-hrs').textContent = hm(mins(last.end) - mins(first.start));
+
+  // Footer: planned hours all days
+  let totalMins = 0;
+  DAYS.forEach(d => {
+    const f = d.blocks[0], l = d.blocks[d.blocks.length - 1];
+    totalMins += mins(l.end) - mins(f.start);
+  });
+  document.getElementById('f-total-hrs').textContent = hm(totalMins);
+}
+
+/* ═══════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════ */
+document.querySelectorAll('.day-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchDay(Number(tab.dataset.day)));
+});
+
+initStdChecklist();
+renderDay();
+</script>
+</body>
+</html>
