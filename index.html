@@ -800,10 +800,12 @@ function hm(m) { if(m<0)m=Math.abs(m); const h=Math.floor(m/60),mm=m%60; if(h===
 /* ═══════════════════════════════════════════
    ACTIVE DAY
 ═══════════════════════════════════════════ */
-let activeDay = 0;
+let activeDay = state._day || 0;
 
 function switchDay(idx) {
   activeDay = idx;
+  state._day = idx;
+  save();
   document.querySelectorAll('.day-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
   renderDay();
 }
@@ -1088,9 +1090,13 @@ function updateGlobal() {
 /* ═══════════════════════════════════════════
    BOOT
 ═══════════════════════════════════════════ */
-document.querySelectorAll('.day-tab').forEach(tab => {
+document.querySelectorAll('.day-tab').forEach((tab, i) => {
   tab.addEventListener('click', () => switchDay(Number(tab.dataset.day)));
+  tab.classList.toggle('active', i === activeDay);
 });
+
+// Ensure state is saved when iOS closes/hides the page
+window.addEventListener('pagehide', save);
 
 initStdChecklist();
 renderDay();
